@@ -99,6 +99,7 @@ void CutLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*> & bottom,
   
   // ROI
   caffe_set(N*H*W, Dtype(1.0), ROI_allimages);
+#pragma omp parallel for
   for(int n=0;n<N;n++){
     const Dtype * image = images + H*W*3*n;
     for(int h=0;h<H;h++){
@@ -112,14 +113,15 @@ void CutLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*> & bottom,
   //printf("NC forward\n");
   //printf("bi std %.2f %.2f\n", bi_xy_std_, bi_rgb_std_);
   
-
+  Dtype nc = Dtype(0);
+#if 1
   // initialize permutohedrals
   for(int n=0;n<N;n++){
     const Dtype * image = images + H*W*3*n;
     initializePermutohedral((float *)image, W, H, bi_rgb_std_, bi_xy_std_, permutohedrals[n]);
   }
   
-  Dtype nc = Dtype(0);
+#pragma omp parallel for reduction(+: nc)
   for(int n=0;n<N;n++){
     const Dtype * image = images + H*W*3*n;
     
@@ -132,6 +134,7 @@ void CutLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*> & bottom,
     //exit(-1);
   }
   nc = nc / N;
+#endif
   Dtype* top_data = top[0]->mutable_cpu_data();
   top_data[0] = nc;
 }
@@ -154,6 +157,7 @@ void CutLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*> & top,
     int H = bottom[0]->shape(2);
     int W = bottom[0]->shape(3);
     Dtype* bottom_diff = bottom[1]->mutable_cpu_diff();
+#pragma omp parallel for
     for(int n=0;n<N;n++){
       const Dtype * image = images + H*W*3*n;
       if(!encode_scribble_)

@@ -797,19 +797,36 @@ layer {
   }
 }
 layer {
-  name: "fc8_mat"
-  type: "MatWrite"
-  bottom: "fc_fusion"
-  mat_write_param {
-    prefix: "${FEATURE_DIR}/${TEST_SET}/fc8/"
-    source: "${EXP}/list/${TEST_SET}_id.txt"
-    strip: 0
-    period: 1
+  bottom: "fc8_interp"
+  top: "fc8_interp_softmax"
+  name: "fc8_interp_softmax"
+  type: "Softmax"
+}
+layer {
+  type: "Python"
+  name: 'SparseCut'
+  bottom: 'fc8_interp_softmax'
+  bottom: 'data'
+  top: 'sparce_cut'
+  python_param {
+      module: 'pylayers'
+      layer: 'SparseCutLayer'
   }
-  include: { phase: TEST }
+#  loss_weight: ${CUT_LOSS_WEIGHT}
 }
 
-
+#layer {
+#  name: "fc8_mat"
+#  type: "MatWrite"
+#  bottom: "fc_fusion"
+#  mat_write_param {
+#    prefix: "${FEATURE_DIR}/${TEST_SET}/fc8/"
+#    source: "${EXP}/list/${TEST_SET}_id.txt"
+#    strip: 0
+#    period: 1
+#  }
+#  include: { phase: TEST }
+#}
 # JAY EDIT THIS LAYER
 #layer {
 #  bottom: "fc8_interp"
@@ -860,38 +877,59 @@ layer {
     reset: false
   } 
 }
+layer {
+  type: "Python"
+  name: 'HardMaxLayer'
+  bottom: 'fc8_interp_softmax'
+  top: 'fc8_interp_hardmax'
+  python_param {
+      module: 'pylayers'
+      layer: 'HardMaxLayer'
+  }
+}
+layer {
+  type: "Python"
+  name: 'SparseCutLoss'
+  bottom: 'fc8_interp_hardmax'
+  bottom: 'data'
+  top: 'sparce_cut2'
+  python_param {
+      module: 'pylayers'
+      layer: 'SparseCutLayer'
+  }
+}
 
 
 
 ########### DENSE CRF ############
-layer {
-  bottom: "fc_fusion"
-  bottom: "data_dim"
-  bottom: "data"
-  top: "crf_inf"
-  name: "crf"
-  type: "DenseCRF"
-  dense_crf_param {
-    max_iter: 10
-    pos_w: 3
-    pos_xy_std: 3
-    bi_w: 4
-    bi_xy_std: 83
-    bi_rgb_std: 5
-  }
-}
+#layer {
+#  bottom: "fc_fusion"
+#  bottom: "data_dim"
+#  bottom: "data"
+#  top: "crf_inf"
+#  name: "crf"
+#  type: "DenseCRF"
+#  dense_crf_param {
+#    max_iter: 10
+#    pos_w: 3
+#    pos_xy_std: 3
+#    bi_w: 4
+#    bi_xy_std: 83
+#    bi_rgb_std: 5
+#  }
+#}
 
-layer {
-  name: "accuracyCRF"
-  type: "SegAccuracy"
-  bottom: "crf_inf"
-  bottom: "label"
-  top: "accuracyCRF"
-  seg_accuracy_param {
-    ignore_label: 255
-    reset: false
- } 
-}
+#layer {
+#  name: "accuracyCRF"
+#  type: "SegAccuracy"
+#  bottom: "crf_inf"
+#  bottom: "label"
+#  top: "accuracyCRF"
+#  seg_accuracy_param {
+#    ignore_label: 255
+#    reset: false
+# } 
+#}
 
 #layer {
 #  name: "crf_mat"

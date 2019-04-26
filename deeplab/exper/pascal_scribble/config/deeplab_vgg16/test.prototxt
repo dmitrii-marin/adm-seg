@@ -673,12 +673,12 @@ layer {
 }
 ########################### END of cross entropy loss #########
 ############################ NC LOSS ##########################
-#layer {
-#  bottom: "fc8_interp"
-#  top: "fc8_interp_softmax"
-#  name: "fc8_interp_softmax"
-#  type: "Softmax"
-#}
+layer {
+  bottom: "fc8_interp"
+  top: "fc8_interp_softmax"
+  name: "fc8_interp_softmax"
+  type: "Softmax"
+}
 #layer {
 #  name: "fc8_mat"
 #  type: "MatWrite"
@@ -713,6 +713,39 @@ layer {
 #    encode_scribble: false
 #  }
 #}
+layer {
+  type: "Python"
+  name: 'SparseCutLoss'
+  bottom: 'fc8_interp_softmax'
+  bottom: 'data'
+  top: 'sparce_cut'
+  python_param {
+      module: 'pylayers'
+      layer: 'SparseCutLayer'
+  }
+}
+layer {
+  type: "Python"
+  name: 'HardMaxLayer'
+  bottom: 'fc8_interp_softmax'
+  top: 'fc8_interp_hardmax'
+  python_param {
+      module: 'pylayers'
+      layer: 'HardMaxLayer'
+  }
+}
+layer {
+  type: "Python"
+  name: 'SparseCutLoss'
+  bottom: 'fc8_interp_hardmax'
+  bottom: 'data'
+  top: 'sparce_cut2'
+  python_param {
+      module: 'pylayers'
+      layer: 'SparseCutLayer'
+  }
+}
+
 ############################ END of NC LOSS ##########################
 
 ########## DENSE CRF ############

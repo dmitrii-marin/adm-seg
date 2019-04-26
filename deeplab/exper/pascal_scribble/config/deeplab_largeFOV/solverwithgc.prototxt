@@ -1,0 +1,17 @@
+train_net: "${EXP}/config/${NET_ID}/trainwithgc_${TRAIN_SET}.prototxt"
+
+lr_policy: "step"
+gamma: 0.1
+stepsize: 3000
+base_lr: 1e-4
+
+random_seed: 10000000
+
+display: 10
+max_iter: 9000
+momentum: 0.9
+weight_decay: 0.0005
+
+snapshot: 1000
+snapshot_prefix: "${EXP}/model/${NET_ID}/trainwithgc_p${GC_POTTS}_cew${GC_CEWEIGHT}"
+solver_mode: GPU

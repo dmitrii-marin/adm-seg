@@ -310,6 +310,7 @@ message ParamSpec {
 // LayerParameter next available layer-specific ID: 153 (last added: normalized_cut_param)
 // LayerParameter next available layer-specific ID: 154 (last added: kmeans_param)
 // LayerParameter next available layer-specific ID: 155 (last added: MultiStageMeanfieldParameter)
+// LayerParameter next available layer-specific ID: 156 (last added: GraphCutParameter)
 message LayerParameter {
   optional string name = 1; // the layer name
   optional string type = 2; // the layer type
@@ -409,6 +410,13 @@ message LayerParameter {
   optional NormalizedCutParameter normalized_cut_param = 152;
   optional KMeansParameter kmeans_param = 153;
   optional MultiStageMeanfieldParameter multi_stage_meanfield_param = 154;
+  optional GraphCutParameter graphcut_param = 155;
+}
+
+message GraphCutParameter {
+  // positional std, color std and weight for Bilateral filter
+  optional int32 max_iter = 1 [default = 20];
+  optional float potts_weight = 2 [default = 10];
 }
 
 // Message that stores parameters used to apply transformation

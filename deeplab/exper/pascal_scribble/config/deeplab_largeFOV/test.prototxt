@@ -434,7 +434,7 @@ layer {
 #  top: "crf_inf"
 #  name: "crf"
 #  type: "DenseCRF"
-#  dense_crf_param { 
+#  dense_crf_param {
 #    max_iter: 10
 #    pos_w: 3
 #    pos_xy_std: 3
@@ -454,21 +454,23 @@ layer {
 #  seg_accuracy_param {
 #    ignore_label: 255
 #    reset: false
-#  } 
+#  }
 #}
 
-#layer {
-#  name: "crf_mat"
-#  type: MAT_WRITE
-#  bottom: "crf_inf"
-#  mat_write_param {
-#    prefix: "${FEATURE_DIR}/${TEST_SET}/crf/"
-#    source: "${EXP}/list/${TEST_SET}_id.txt"
-#    strip: 0
-#    period: 1
-#  }
-#  include: { phase: TEST }
-#}
+# layer {
+#   name: "crf_mat"
+#   type: "MatWrite"
+#   # bottom: "data"
+#   # bottom: "label"
+#   bottom: "fc8_interp"
+#   mat_write_param {
+#     prefix: "/tmp/dima/"
+#     source: "${EXP}/list/${TEST_SET}_id.txt"
+#     strip: 0
+#     period: 1
+#   }
+#   include: { phase: TEST }
+# }
 
 
 
@@ -481,18 +483,59 @@ layer {
   seg_accuracy_param {
     ignore_label: 255
     reset: false
-  } 
+  }
 }
 
-layer {
-  bottom: "label"
-  bottom: "fc8_interp"
-  name: "silence"
-  type: "Silence"
-  include: { phase: TEST }
-}
+# layer {
+#   bottom: "label"
+#   bottom: "fc8_interp"
+#   name: "silence"
+#   type: "Silence"
+#   include: { phase: TEST }
+# }
 
 ############ test NC forward layers ############
+#layer {
+#  bottom: "fc8_interp"
+#  top: "fc8_interp_softmax"
+#  name: "fc8_interp_softmax"
+#  type: "Softmax"
+#}
+#layer {
+#  type: "Python"
+#  name: 'SparseCutLoss'
+#  bottom: 'fc8_interp_softmax'
+#  bottom: 'data'
+#  top: 'sparce_cut'
+#  python_param {
+#      module: 'pylayers'
+#      layer: 'SparseCutLayer'
+#  }
+#}
+#layer {
+#  type: "Python"
+#  name: 'HardMaxLayer'
+#  bottom: 'fc8_interp_softmax'
+#  top: 'fc8_interp_hardmax'
+#  python_param {
+#      module: 'pylayers'
+#      layer: 'HardMaxLayer'
+#  }
+#}
+#layer {
+#  type: "Python"
+#  name: 'SparseCutLoss'
+#  bottom: 'fc8_interp_hardmax'
+#  bottom: 'data'
+#  top: 'sparce_cut2'
+#  python_param {
+#      module: 'pylayers'
+#      layer: 'SparseCutLayer'
+#  }
+#}
+
+
+
 #layer {
 #  type: "Split"
 #  name: "splitting"

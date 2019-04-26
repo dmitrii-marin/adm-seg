@@ -22,6 +22,7 @@
 #include "caffe/layers/multi_stage_mean_field_layer.hpp"
 
 #include <cmath>
+#include <memory>
 
 namespace caffe {
 
@@ -97,10 +98,10 @@ void MultiStageMeanfieldLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bot
   }
 
   // Initialize the spatial lattice. This does not need to be computed for every image because we use a fixed size.
-  float spatial_kernel[2 * num_pixels_];
-  compute_spatial_kernel(spatial_kernel);
+  std::unique_ptr<float[]> spatial_kernel(new float[2 * num_pixels_]);
+  compute_spatial_kernel(spatial_kernel.get());
   spatial_lattice_.reset(new ModifiedPermutohedral());
-  spatial_lattice_->init(spatial_kernel, 2, num_pixels_);
+  spatial_lattice_->init(spatial_kernel.get(), 2, num_pixels_);
 
   // Calculate spatial filter normalization factors.
   //norm_feed_.reset(new Dtype[num_pixels_]);

@@ -1,3 +1,6 @@
+*.pyc
+*_*.prototxt
+*.caffemodel
 *.pickle
 deeplab/exper/*/log
 exp/log
@@ -44,16 +47,16 @@ plot/*.pdf
 *.out
 *.app
 
+.idea/
 densecrf/
 permutohedral/
 code/main
 *.log
 
 *.mat
-*.caffemodel
 *.solverstate
 *.bin
-*_*.prototxt
+#*_*.prototxt
 
 *.fig
 *.mexa64

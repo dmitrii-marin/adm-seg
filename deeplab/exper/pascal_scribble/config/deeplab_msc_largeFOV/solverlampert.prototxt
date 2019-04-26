@@ -9,11 +9,11 @@ random_seed: 10000000
 
 average_loss: 10
 display: 10
-max_iter: 9000
+max_iter: 6000
 momentum: 0.9
 weight_decay: 0.0005
 
 snapshot: 500
-snapshot_prefix: "${EXP}/model/${NET_ID}/trainlampert${LAMPERT_WEIGHT}"
+snapshot_prefix: "${EXP}/model/${NET_ID}/${TRAIN_SET}_lampert${LAMPERT_WEIGHT}"
 solver_mode: GPU
 

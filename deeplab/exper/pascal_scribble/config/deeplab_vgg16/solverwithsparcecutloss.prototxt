@@ -1,0 +1,15 @@
+train_net: "${EXP}/config/${NET_ID}/trainwithsparcecutloss_${TRAIN_SET}.prototxt"
+
+lr_policy: "poly"
+power: 0.9
+base_lr: 5e-4
+
+average_loss: 20
+display: 20
+max_iter: 10000
+momentum: 0.9
+weight_decay: 0.0005
+
+snapshot: 1000
+snapshot_prefix: "${EXP}/model/${NET_ID}/trainwithsparcecutloss${CUT_LOSS_WEIGHT}"
+solver_mode: GPU

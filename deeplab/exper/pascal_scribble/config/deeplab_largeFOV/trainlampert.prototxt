@@ -610,7 +610,7 @@ layer {
       module: "pylayers"
       layer: "CRFLayer"
   }
-  propagate_down: 1
+  propagate_down: 0
   propagate_down: 0
 }
 
