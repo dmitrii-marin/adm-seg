@@ -14,6 +14,7 @@ If you find our work useful in your research please consider citing our paper:
   address = {Long Beach, California}
 }
 ```
+[[pdf](https://cs.uwaterloo.ca/~yboykov/Papers/cvpr19_ADM.pdf)]
 
 ## ScribbleSup Dataset
 
