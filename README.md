@@ -24,6 +24,10 @@ http://host.robots.ox.ac.uk/pascal/VOC/
 Download Scribble annotations:
 https://jifengdai.org/downloads/scribble_sup/
 
+## Compilation
+
+In ```deeplab/code/``` rename ```Makefile.config.example``` into ```Makefile.config```. Edit ```Makefile.config ``` to set up the compilation. In particular, set ```USE_CUDNN := 1``` to use CUDA and set ```CUDA_DIR``` to point to your CUDA instalation; adjust ```INCLUDE_DIRS``` and ```LIBRARY_DIRS``` to include libraries BOOST, BLAS, etc. See the dependecy list [here](deeplab/code/cmake/Dependencies.cmake). Run ```make```.
+
 ## Training and Testing
 
 Update variable ```ROOT``` in ```deeplab/exper/run_pascal_scribble.sh``` to point to the ScribbleSup dataset.
