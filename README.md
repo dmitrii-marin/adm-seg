@@ -21,8 +21,7 @@ If you find our work useful in your research please consider citing our paper:
 Download original PASCAL VOC 2012 dataset:
 http://host.robots.ox.ac.uk/pascal/VOC/
 
-Download Scribble annotations:
-https://jifengdai.org/downloads/scribble_sup/
+Download Scribble annotations: http://cs.uwaterloo.ca/~m62tang/rloss/pascal_2012_scribble.zip, the original dataset can be found [here](https://jifengdai.org/downloads/scribble_sup/)
 
 ## Compilation
 
@@ -38,10 +37,10 @@ First, train and test a base model (with partial cross entropy only):
 cd deeplab/exper
 DEV_ID=0 bash -x ./run_pascal_scribble.sh
 ```
-The model will be saved in ```pascal_scribble/model/deeplab_largeFOV/train_iter_9000.caffemodel```. The accuracy  should be approximately 55.8%.
+The model will be saved in ```pascal_scribble/model/deeplab_largeFOV/train_iter_9000.caffemodel```. The mIoU should be approximately 55.8%.
 
 Then, add regularization to the loss and train/test the model using ADM:
 ```bash
 TRAIN_CONFIG=GRID-ADM MODEL=pascal_scribble/model/deeplab_largeFOV/train_iter_9000.caffemodel DEV_ID=0 ./run_pascal_scribble.sh
 ```
-This should give accuracy of approximately 61.7%
+This should give mIoU of approximately 61.7%
