@@ -14,6 +14,5 @@ momentum: 0.9
 weight_decay: 0.0005
 
 snapshot: 500
-snapshot_prefix: "${EXP}/model/${NET_ID}/trainwithcutloss${CUT_LOSS_WEIGHT}"
+snapshot_prefix: "${EXP}/model/${NET_ID}/${TRAIN_SET}withcutloss${CUT_LOSS_WEIGHT}"
 solver_mode: GPU
-

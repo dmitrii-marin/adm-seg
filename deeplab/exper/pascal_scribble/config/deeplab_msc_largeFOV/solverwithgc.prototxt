@@ -14,6 +14,5 @@ momentum: 0.9
 weight_decay: 0.0005
 
 snapshot: 1000
-snapshot_prefix: "${EXP}/model/${NET_ID}/trainwithgc_p${GC_POTTS}_cew${GC_CEWEIGHT}"
+snapshot_prefix: "${EXP}/model/${NET_ID}/${TRAIN_SET}withgc_p${GC_POTTS}_cew${GC_CEWEIGHT}"
 solver_mode: GPU
-

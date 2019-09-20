@@ -16,4 +16,3 @@ weight_decay: 0.0005
 snapshot: 500
 snapshot_prefix: "${EXP}/model/${NET_ID}/${TRAIN_SET}_lampert${LAMPERT_WEIGHT}"
 solver_mode: GPU
-
