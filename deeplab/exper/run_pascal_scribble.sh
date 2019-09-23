@@ -11,6 +11,8 @@ CAFFE_BIN=${CAFFE_DIR}/.build_release/tools/caffe
 ## MODIFY PATH for YOUR SETTING
 DATA_ROOT=/home/mtang73/Disney/data/pascal_scribble/
 
+export PYTHONPATH=../code/python:$PYTHONPATH
+
 if [ -z "$EXP" ]; then EXP=pascal_scribble; fi
 
 NUM_LABELS=21
@@ -56,6 +58,7 @@ if [ ${RUN_TRAIN} -eq 1 ]; then
 		;;
   	GRID-GD)
 		TRAIN_CONFIG="trainwithsparcecutloss solverwithsparcecutloss"
+		[ -n "$CUT_LOSS_WEIGHT" ] || CUT_LOSS_WEIGHT=3.5
 		;;
 	GRID-ADM)
 		TRAIN_CONFIG="trainwithgc solverwithgc"
